@@ -4,7 +4,6 @@ const { pool } = require("../config/dbConfig");
 const bcrypt = require("bcrypt");
 const passport = require("passport");
 
-
 // Функция для получения департаментов (вынесена для переиспользования)
 const getDepartments = async () => {
   try {

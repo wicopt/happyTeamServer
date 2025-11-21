@@ -18,19 +18,17 @@ const PORT = process.env.PORT || 3002;
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-app.use(
-  cors({
-    origin: (origin, callback) => callback(null, true),
-    credentials: true,
-  })
-);
+app.use(cors({
+  origin: true,  // автоматически разрешает текущий origin
+  credentials: true
+}));
 app.set("view engine", "ejs");
 
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
-    resave: false, // ← ДОБАВЬТЕ
-    saveUninitialized: false, // ← ДОБАВЬТЕ
+    resave: false,  
+    saveUninitialized: false, 
     cookie: {
       sameSite: 'strict',
       maxAge: 24 * 60 * 60 * 1000, // 24 часа
