@@ -7,7 +7,9 @@ const passport = require("passport");
 // Функция для получения департаментов (вынесена для переиспользования)
 const getDepartments = async () => {
   try {
-    const result = await pool.query("SELECT department_id, department_name FROM departments");
+    const result = await pool.query(
+      "SELECT department_id, department_name FROM departments"
+    );
     return result.rows;
   } catch (err) {
     console.error("Ошибка загрузки отделов:", err);
@@ -42,7 +44,14 @@ router.post("/register", async (req, res) => {
   console.log("Данные из формы:", req.body);
 
   // Валидация
-  if (!name || !password || !password2 || !birthday || !surname || !department_id) {
+  if (
+    !name ||
+    !password ||
+    !password2 ||
+    !birthday ||
+    !surname ||
+    !department_id
+  ) {
     errors.push({ message: "Please enter all required fields" });
   }
 
@@ -59,7 +68,7 @@ router.post("/register", async (req, res) => {
     try {
       const departments = await getDepartments();
       res.render("register", {
-        departments,  // ← ТЕПЕРЬ ПЕРЕДАЕМ!
+        departments,
         errors,
         username: username || "",
         name: name || "",
@@ -88,7 +97,7 @@ router.post("/register", async (req, res) => {
     if (userCheck.rows.length > 0) {
       const departments = await getDepartments();
       return res.render("register", {
-        departments,  // ← ТЕПЕРЬ ПЕРЕДАЕМ!
+        departments, // ← ТЕПЕРЬ ПЕРЕДАЕМ!
         errors: [{ message: "Username already registered" }],
         username: username || "",
         name: name || "",
@@ -103,24 +112,31 @@ router.post("/register", async (req, res) => {
 
     // Хешируем пароль и создаем пользователя
     const hashedPassword = await bcrypt.hash(password, 10);
-    
+
     const newUser = await pool.query(
       `INSERT INTO users (username, name, surname, patronymic, department_id, birthday, password_hash)
        VALUES ($1, $2, $3, $4, $5, $6, $7)
        RETURNING user_id, username, name`,
-      [username, name, surname, patronymic, department_id, birthday, hashedPassword]
+      [
+        username,
+        name,
+        surname,
+        patronymic,
+        department_id,
+        birthday,
+        hashedPassword,
+      ]
     );
 
     console.log("Новый пользователь:", newUser.rows[0]);
     res.send("Пользователь успешно зарегистрирован");
-
   } catch (err) {
     console.error("Ошибка при регистрации:", err);
-    
+
     // При ошибке БД тоже загружаем departments
     const departments = await getDepartments();
     res.render("register", {
-      departments,  // ← ТЕПЕРЬ ПЕРЕДАЕМ!
+      departments, // ← ТЕПЕРЬ ПЕРЕДАЕМ!
       errors: [{ message: "Database error during registration" }],
       username: username || "",
       name: name || "",
@@ -135,28 +151,41 @@ router.post("/register", async (req, res) => {
 });
 
 router.post("/login", (req, res, next) => {
-  console.log("Попытка логина");
+  console.log("=== LOGIN ATTEMPT ===");
+  console.log("Username:", req.body.username);
 
   passport.authenticate("local", (err, user, info) => {
-    if (err) return next(err);
-
-    if (!user) {
-      console.log("Неправильные данные");
-      return res.status(401).json({ message: info?.message || "Invalid credentials" });
+    if (err) {
+      console.error("Auth error:", err);
+      return res.status(500).json({ error: "Authentication error" });
     }
 
-    req.session.user = user;
-    req.session.authorized = true;
+    if (!user) {
+      console.log("Auth failed:", info);
+      return res.status(401).json({ error: info?.message || "Invalid credentials" });
+    }
 
     req.logIn(user, (err) => {
-      if (err) return next(err);
-      return res.json({
-        message: "Login successful",
-        user
+      if (err) {
+        console.error("Login error:", err);
+        return res.status(500).json({ error: "Login failed" });
+      }
+
+      console.log("✅ Login successful, user ID:", user.user_id);
+      
+      
+
+      return res.json({ 
+        message: "Login successful", 
+        user: {
+          user_id: user.user_id,
+          username: user.username,
+          name: user.name
+        },
+        sessionId: req.sessionID // для отладки
       });
     });
   })(req, res, next);
 });
-
 
 module.exports = router;

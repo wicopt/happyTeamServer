@@ -59,6 +59,7 @@ class User {
              u.birthday, d.department_name
       FROM users u
       LEFT JOIN departments d ON u.department_id = d.department_id
+      ORDER BY EXTRACT(MONTH FROM u.birthday), EXTRACT(DAY FROM u.birthday)
     `);
     return result.rows;
   }

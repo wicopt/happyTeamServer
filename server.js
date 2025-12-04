@@ -12,6 +12,8 @@ const initializePassport = require("./config/passportConfig");
 const authRoutes = require("./routes/auth");
 const depRoutes = require("./routes/departments");
 const usersRoutes = require("./routes/users");
+const wishRoutes = require("./routes/wishes");
+const uploadRoutes = require("./routes/upload");
 initializePassport(passport);
 
 const PORT = process.env.PORT || 3002;
@@ -20,7 +22,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cors({
   origin: true,  // автоматически разрешает текущий origin
-  credentials: true
+  credentials: true, // Разрешить передачу кук
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Cookie']
 }));
 app.set("view engine", "ejs");
 
@@ -41,12 +45,22 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
+app.get("/debug-cookies", (req, res) => {
+  res.json({
+    cookies: req.headers.cookie || 'No cookies',
+    sessionId: req.sessionID,
+    session: req.session
+  });
+});
+
 app.get("/", (req, res) => {
   res.send("Hello?");
 });
 app.use("/users", usersRoutes);
 app.use("/auth", authRoutes);
 app.use("/departments", depRoutes);
+app.use("/wishes", wishRoutes);
+app.use("/upload", uploadRoutes);
 
 pool.connect((err, client, release) => {
   if (err) {
@@ -56,6 +70,6 @@ pool.connect((err, client, release) => {
   release();
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server is running on port http://localhost:${PORT}`);
 });
