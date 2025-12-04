@@ -1,4 +1,4 @@
 runtime: nodejs
 version: 18
-start: npm start
-port: 3000
+start: npm run dev
+port: 3002
