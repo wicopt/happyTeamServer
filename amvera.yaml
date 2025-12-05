@@ -1,4 +1,9 @@
-runtime: nodejs
-version: 18
-start: npm run dev
-port: 3002
+meta:
+  environment: nodejs
+  toolchain:
+    name: node
+    version: 18
+
+run:
+  start: npm start
+  port: 3002
