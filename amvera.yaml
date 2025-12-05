@@ -1,4 +1,19 @@
-type: node
+version: null
+meta:
+  environment: node
+  toolchain:
+    name: npm
+    version: "18"
+build:
+  skip: false
+  additionalCommands: ""
+  artifacts:
+    "*": /
 run:
-  script: node server.js
-
+  scriptName: server.js
+  scriptArguments: ""
+  nodeArguments: ""
+  command: npm run dev
+  persistenceMount: /data
+  containerPort: 80
+serviceType: compute
