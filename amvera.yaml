@@ -15,5 +15,5 @@ run:
   nodeArguments: ""
   command: npm run dev
   persistenceMount: /data
-  containerPort: 80
+  containerPort: 3002
 serviceType: compute
