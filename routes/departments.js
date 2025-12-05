@@ -19,7 +19,7 @@ router.post("/add", async (req, res) => {
   }
 
   pool.query(
-    `SELECT * FROM public.departments WHERE department_name = $1`,
+    `SELECT * FROM departments WHERE department_name = $1`,
     [department_name],
     (err, results) => {
       if (err) {
@@ -34,7 +34,7 @@ router.post("/add", async (req, res) => {
       }
 
       pool.query(
-        `INSERT INTO public.departments (department_name) VALUES ($1) RETURNING department_id`,
+        `INSERT INTO departments (department_name) VALUES ($1) RETURNING department_id`,
         [department_name],
         (err) => {
           if (err) {
