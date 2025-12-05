@@ -1,9 +1,4 @@
-meta:
-  environment: nodejs
-  toolchain:
-    name: node
-    version: 18
-
+type: node
 run:
-  start: npm start
-  port: 3002
+  script: node server.js
+
