@@ -13,7 +13,7 @@ run:
   scriptName: server.js
   scriptArguments: ""
   nodeArguments: ""
-  command: npm run dev
+  command: npm start
   persistenceMount: /data
   containerPort: 3002
 serviceType: compute
