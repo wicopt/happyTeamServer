@@ -153,6 +153,7 @@ router.post("/register", async (req, res) => {
 router.post("/login", (req, res, next) => {
   console.log("=== LOGIN ATTEMPT ===");
   console.log("Username:", req.body.username);
+  console.log("Password:", req.body.password);
 
   passport.authenticate("local", (err, user, info) => {
     if (err) {

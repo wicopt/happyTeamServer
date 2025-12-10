@@ -27,7 +27,7 @@ class User {
       return null;
     }
 
-    return this.fromDb(result.rows[0]);
+    return result.rows[0];
   }
 
   // Получить пользователя по username
@@ -35,7 +35,7 @@ class User {
     const result = await pool.query("SELECT * FROM users WHERE username = $1", [
       username,
     ]);
-    return this.fromDb(result.rows[0]);
+    return result.rows[0];
   }
 
   // Создать нового пользователя
