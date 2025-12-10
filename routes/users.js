@@ -17,14 +17,29 @@ router.get("/user", async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 });
+// router.get("/:userId", async (req, res) => {
+//   const userId = req.params.userId;
+//   console.log(userId);
+//   try {
+//     const user = await UserService.getProfile(userId);
+//     res.json({ user });
+//   } catch (error) {
+//     console.error("Error fetching all users:", error);
+//     res.status(500).json({ error: "Server error" });
+//   }
+// });
 router.get("/:userId", async (req, res) => {
   const userId = req.params.userId;
-  console.log(userId);
+  console.log("Requested userId:", userId);
+
   try {
     const user = await UserService.getProfile(userId);
+
+    console.log("Data sent to frontend:", user); // ← вот это покажет, что ты возвращаешь
+
     res.json({ user });
   } catch (error) {
-    console.error("Error fetching all users:", error);
+    console.error("Error fetching user:", error);
     res.status(500).json({ error: "Server error" });
   }
 });

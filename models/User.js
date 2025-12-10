@@ -1,6 +1,18 @@
 const { pool } = require("../config/dbConfig");
 
 class User {
+  static fromDb(raw) {
+    return {
+      user_id: Number(raw.user_id),
+      username: raw.username,
+      name: raw.name,
+      surname: raw.surname,
+      patronymic: raw.patronymic,
+      birthday: raw.birthday?.toISOString().split("T")[0],
+      department_id: Number(raw.department_id),
+      department_name: raw.department_name,
+    };
+  }
   // Получить пользователя по ID
   static async findById(userId) {
     const result = await pool.query(
@@ -11,36 +23,55 @@ class User {
        WHERE u.user_id = $1`,
       [userId]
     );
-    return result.rows[0];
+    if (result.rows.length === 0) {
+      return null;
+    }
+
+    return this.fromDb(result.rows[0]);
   }
 
   // Получить пользователя по username
   static async findByUsername(username) {
-    const result = await pool.query(
-      'SELECT * FROM users WHERE username = $1',
-      [username]
-    );
-    return result.rows[0];
+    const result = await pool.query("SELECT * FROM users WHERE username = $1", [
+      username,
+    ]);
+    return this.fromDb(result.rows[0]);
   }
 
   // Создать нового пользователя
   static async create(userData) {
-    const { username, name, surname, patronymic, department_id, birthday, password_hash } = userData;
-    
+    const {
+      username,
+      name,
+      surname,
+      patronymic,
+      department_id,
+      birthday,
+      password_hash,
+    } = userData;
+
     const result = await pool.query(
       `INSERT INTO users (username, name, surname, patronymic, department_id, birthday, password_hash)
        VALUES ($1, $2, $3, $4, $5, $6, $7)
        RETURNING user_id, username, name, surname`,
-      [username, name, surname, patronymic, department_id, birthday, password_hash]
+      [
+        username,
+        name,
+        surname,
+        patronymic,
+        department_id,
+        birthday,
+        password_hash,
+      ]
     );
-    
+
     return result.rows[0];
   }
 
   // Обновить пользователя
   static async update(userId, updateData) {
     const { name, surname, patronymic, department_id, birthday } = updateData;
-    
+
     const result = await pool.query(
       `UPDATE users 
        SET name = $1, surname = $2, patronymic = $3, department_id = $4, birthday = $5
@@ -48,7 +79,7 @@ class User {
        RETURNING *`,
       [name, surname, patronymic, department_id, birthday, userId]
     );
-    
+
     return result.rows[0];
   }
 
@@ -61,7 +92,7 @@ class User {
       LEFT JOIN departments d ON u.department_id = d.department_id
       ORDER BY EXTRACT(MONTH FROM u.birthday), EXTRACT(DAY FROM u.birthday)
     `);
-    return result.rows;
+    return result.rows.map((row) => this.fromDb(row));
   }
 }
 
