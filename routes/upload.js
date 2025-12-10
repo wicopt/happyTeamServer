@@ -41,7 +41,7 @@ router.post("/", upload.single("avatar"), async (req, res) => {
 router.get("/:filename", (req, res) => {
     const filename = req.params.filename;
     console.log(filename);
-    const filePath = path.join(__dirname, "../uploads", filename);
+    const filePath = path.join("/data", filename);
 
     if (fs.existsSync(filePath)) {
         res.sendFile(filePath);
