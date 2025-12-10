@@ -20,7 +20,7 @@ const PORT = process.env.PORT || 3002;
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 const corsOptions = {
-  origin: "https://happyfrontend-mashaushakova.amvera.io",
+  origin: "https://amvera-mashaushakova-run-happyfrontend",
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization", "Cookie"]
