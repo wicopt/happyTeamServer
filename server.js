@@ -20,7 +20,7 @@ const PORT = process.env.PORT || 3002;
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cors({
-  origin: true,  // автоматически разрешает текущий origin
+  origin: "https://happyfrontend-mashaushakova.amvera.io",  // автоматически разрешает текущий origin
   credentials: true, // Разрешить передачу кук
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization', 'Cookie']
