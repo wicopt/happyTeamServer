@@ -29,8 +29,6 @@ const corsOptions = {
 // подключаем cors ко всем маршрутам
 app.use(cors(corsOptions));
 
-// Обработка preflight OPTIONS запросов
-app.options("/*", cors(corsOptions));
 // app.use(cors({
 //   origin: true,  // автоматически разрешает текущий origin
 //   credentials: true, // Разрешить передачу кук
