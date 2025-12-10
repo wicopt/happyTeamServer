@@ -7,7 +7,7 @@ const { pool } = require("../config/dbConfig");
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, path.join(__dirname, "/data"));
+        cb(null, "/data");
     },
     filename: (req, file, cb) => {
         const username = req.user.user_id; 
