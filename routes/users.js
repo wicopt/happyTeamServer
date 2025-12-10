@@ -11,6 +11,7 @@ router.get("/user", async (req, res) => {
   }
   try {
     const user = await UserService.getProfile(req.user.user_id);
+    console.log(user)
     res.json({ user });
   } catch (error) {
     console.error("Error fetching user:", error);

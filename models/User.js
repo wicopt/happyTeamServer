@@ -17,7 +17,7 @@ class User {
   static async findById(userId) {
     const result = await pool.query(
       `SELECT u.user_id, u.username, u.name, u.surname, u.patronymic,
-              u.birthday, u.department_id, d.department_name
+              u.birthday, u.department_id, u.profile_picture, d.department_name
        FROM users u 
        LEFT JOIN departments d ON u.department_id = d.department_id 
        WHERE u.user_id = $1`,
@@ -87,7 +87,7 @@ class User {
   static async findAll() {
     const result = await pool.query(`
       SELECT u.user_id, u.username, u.name, u.surname, u.patronymic,
-             u.birthday, d.department_name
+             u.birthday, u.profile_picture, d.department_name
       FROM users u
       LEFT JOIN departments d ON u.department_id = d.department_id
       ORDER BY EXTRACT(MONTH FROM u.birthday), EXTRACT(DAY FROM u.birthday)
