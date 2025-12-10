@@ -19,13 +19,24 @@ const PORT = process.env.PORT || 3002;
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-app.options("*", cors({
+const corsOptions = {
   origin: "https://happyfrontend-mashaushakova.amvera.io",
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization", "Cookie"]
-}));
+};
 
+// подключаем cors ко всем маршрутам
+app.use(cors(corsOptions));
+
+// Обработка preflight OPTIONS запросов
+app.options("/*", cors(corsOptions));
+// app.use(cors({
+//   origin: true,  // автоматически разрешает текущий origin
+//   credentials: true, // Разрешить передачу кук
+//   methods: ['GET', 'POST', 'PUT', 'DELETE'],
+//   allowedHeaders: ['Content-Type', 'Authorization', 'Cookie']
+// }));
 app.set("view engine", "ejs");
 
 app.use(
