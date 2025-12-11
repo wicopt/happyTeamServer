@@ -156,7 +156,7 @@ router.post("/login", (req, res, next) => {
   console.log("Username:", req.body.username);
   console.log("Password:", req.body.password);
 
-  passport.authenticate("local", (err, user, info) => {
+  passport.authenticate("local", async (err, user, info) => {
     if (err) {
       console.error("Auth error:", err);
       return res.status(500).json({ error: "Authentication error" });
@@ -174,11 +174,9 @@ router.post("/login", (req, res, next) => {
       }
 
       console.log("✅ Login successful, user ID:", user.user_id);
-      
-      id = user.user_id;
-      formatUser = User.findById(id);
-      console.log(formatUser);
-      return res.json( formatUser );
+      console.log(user);
+      formatuser = User.fromDb(user)
+      return res.json( formatuser);
     });
   })(req, res, next);
 });
