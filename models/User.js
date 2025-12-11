@@ -9,8 +9,8 @@ class User {
       surname: raw.surname,
       patronymic: raw.patronymic,
       birthday: raw.birthday?.toISOString().split("T")[0],
-      department_id: Number(raw.department_id),
       department_name: raw.department_name,
+      profile_picture: raw.profile_picture
     };
   }
   // Получить пользователя по ID
