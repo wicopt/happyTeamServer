@@ -175,16 +175,8 @@ router.post("/login", (req, res, next) => {
       console.log("✅ Login successful, user ID:", user.user_id);
       
       
-
-      return res.json({ 
-        message: "Login successful", 
-        user: {
-          user_id: user.user_id,
-          username: user.username,
-          name: user.name
-        },
-        sessionId: req.sessionID // для отладки
-      });
+      formatUser = User.formatUser(user)
+      return res.json({ formatUser });
     });
   })(req, res, next);
 });
