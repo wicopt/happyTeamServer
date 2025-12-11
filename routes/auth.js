@@ -177,7 +177,7 @@ router.post("/login", (req, res, next) => {
       
       id = user.user_id
       formatUser = User.findById(id)
-      return res.json({ formatUser });
+      return res.json( formatUser );
     });
   })(req, res, next);
 });
