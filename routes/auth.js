@@ -176,7 +176,7 @@ router.post("/login", (req, res, next) => {
       console.log("✅ Login successful, user ID:", user.user_id);
       
       
-      formatUser = User.formatUser(user)
+      formatUser = User.fromDb(user);
       return res.json({ formatUser });
     });
   })(req, res, next);
