@@ -34,7 +34,7 @@ router.put("/:wishId", async (req, res) => {
   try {
     const updatedWish = await Wish.update(req.params.wishId, req.body);
     console.log("✅ Успешно обновлено:", updatedWish);
-    res.json(updatedWish);
+    res.json({updatedWish});
   } catch (error) {
     console.error("❌ Ошибка в Wish.update:", error);
     console.error("Stack trace:", error.stack);
@@ -62,7 +62,7 @@ router.post("/", async (req, res) => {
   try {
     const newWish = await Wish.create(req.body);
     console.log("✅ Wish created:", newWish);
-    res.status(201).json(newWish);
+    res.status(201).json({newWish});
   } catch (error) {
     console.error("❌ Error creating wish:", error);
     res.status(500).json({ error: "Server error" });
