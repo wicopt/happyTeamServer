@@ -7,7 +7,7 @@ router.get("/:userId", async (req, res) => {
   try {
     const wishes = await Wish.findAll(userId);
     console.log(wishes)
-    res.json( wishes );
+    res.json({ wishes });
   } catch (error) {
     console.error("Error fetching all wishes:", error);
     res.status(500).json({ error: "Server error" });
