@@ -10,7 +10,7 @@ class User {
       patronymic: raw.patronymic,
       birthday: raw.birthday?.toISOString().split("T")[0],
       department_name: raw.department_name,
-      profile_picture: raw.profile_picture
+      profile_picture: raw.profile_picture,
     };
   }
   // Получить пользователя по ID
@@ -32,9 +32,15 @@ class User {
 
   // Получить пользователя по username
   static async findByUsername(username) {
-    const result = await pool.query("SELECT * FROM users WHERE username = $1", [
-      username,
-    ]);
+    const result = await pool.query(
+      `SELECT u.user_id, u.username, u.name, u.surname, u.patronymic,
+            u.birthday, u.department_id, u.profile_picture, u.password_hash,
+            d.department_name
+     FROM users u 
+     LEFT JOIN departments d ON u.department_id = d.department_id 
+     WHERE u.username = $1`,
+      [username]
+    );
     return result.rows[0];
   }
 
