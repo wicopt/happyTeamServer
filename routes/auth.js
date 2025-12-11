@@ -3,6 +3,7 @@ const router = express.Router();
 const { pool } = require("../config/dbConfig");
 const bcrypt = require("bcrypt");
 const passport = require("passport");
+const User = require("../models/User")
 
 // Функция для получения департаментов (вынесена для переиспользования)
 const getDepartments = async () => {
