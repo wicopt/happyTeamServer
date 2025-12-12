@@ -35,7 +35,7 @@ router.post("/", async (req, res) => {
   try {
     const newComm = await Comments.create(req.body);
     console.log("Comm created:", newComm);
-    res.status(201).json({newComm});
+    res.status(201).json(newComm);
   } catch (error) {
     console.error("❌ Error creating comm:", error);
     res.status(500).json({ error: "Server error" });
