@@ -30,13 +30,16 @@ CREATE TABLE wishes (
         REFERENCES users(user_id)
         ON DELETE CASCADE
 );
-CREATE TABLE "session" (
-  "sid" varchar NOT NULL COLLATE "default",
-  "sess" json NOT NULL,
-  "expire" timestamp(6) NOT NULL
-)
-WITH (OIDS=FALSE);
+CREATE TABLE "comments" (
+	comment_id bigserial NOT NULL,
+	user_id int8 NOT NULL,
+	wish_id int8 NOT NULL,
+	"content" text NOT NULL,
+	datentime timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+	CONSTRAINT comments_pkey PRIMARY KEY (comment_id)
+);
 
-ALTER TABLE "session" ADD CONSTRAINT "session_pkey" PRIMARY KEY ("sid") NOT DEFERRABLE INITIALLY IMMEDIATE;
 
-CREATE INDEX "IDX_session_expire" ON "session" ("expire");
+
+ALTER TABLE "comments" ADD CONSTRAINT fk_comment_user FOREIGN KEY (user_id) REFERENCES public.users(user_id) ON DELETE CASCADE;
+ALTER TABLE "comments" ADD CONSTRAINT fk_comment_wish FOREIGN KEY (wish_id) REFERENCES public.wishes(wish_id) ON DELETE CASCADE;

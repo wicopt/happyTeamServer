@@ -13,6 +13,7 @@ const depRoutes = require("./routes/departments");
 const usersRoutes = require("./routes/users");
 const wishRoutes = require("./routes/wishes");
 const uploadRoutes = require("./routes/upload");
+const commentRoutes = require("./routes/comments");
 initializePassport(passport);
 
 const PORT = process.env.PORT || 3002;
@@ -62,6 +63,7 @@ app.use("/auth", authRoutes);
 app.use("/departments", depRoutes);
 app.use("/wishes", wishRoutes);
 app.use("/upload", uploadRoutes);
+app.use("/comments", commentRoutes);
 
 pool.connect((err, client, release) => {
   if (err) {
