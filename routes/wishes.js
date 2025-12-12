@@ -62,7 +62,7 @@ router.post("/", async (req, res) => {
   try {
     const newWish = await Wish.create(req.body);
     console.log("✅ Wish created:", newWish);
-    res.status(201).json({newWish});
+    res.status(201).json(newWish);
   } catch (error) {
     console.error("❌ Error creating wish:", error);
     res.status(500).json({ error: "Server error" });

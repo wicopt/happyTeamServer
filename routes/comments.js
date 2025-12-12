@@ -8,7 +8,7 @@ router.get("/:wishId", async (req, res) => {
   try {
     const comments = await Comments.findAll(wishId);
 
-    console.log(comments); // ← вот это покажет, что ты возвращаешь
+    console.log(comments);
 
     res.json(comments);
   } catch (error) {
