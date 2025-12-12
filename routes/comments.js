@@ -21,7 +21,6 @@ router.delete("/:commentId", async (req, res) => {
   const commentId = req.params.commentId;
   try {
     const comm = await Comments.delete(commentId);
-    res.json({"deleted comm:": commentId })
   } catch (error) {
     console.error("Error deleting wish:", error);
     res.status(500).json({ error: "Server error" });
