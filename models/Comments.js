@@ -1,5 +1,17 @@
 const { pool } = require("../config/dbConfig");
 class Comments {
+  static fromDb(raw) {
+    return {
+      comment_id: Number(raw.comment_id),
+      wish_id: Number(raw.wish_id),
+      user_id: Number(raw.user_id),
+      content: raw.content,
+      name: raw.name,
+      surname: raw.surname,
+      department_name: raw.department_name,
+      profile_picture: raw.profile_picture,
+    };
+  }
   static async findById(comment_id) {
     const result = await pool.query(
       `SELECT с.user_id, c.comment_id, c.wish_id, 
@@ -29,12 +41,21 @@ class Comments {
     const result = await pool.query(query, values);
     return result.rows[0];
   }
+  static async delete(commentId) {
+    const result = await pool.query(
+      `DELETE FROM comments 
+       WHERE comment_id = $1
+       RETURNING *`,
+      [commentId]
+    );
+  }
   static async findAll(wish_id) {
     const result = await pool.query(
       `SELECT c.user_id, c.comment_id, c.wish_id, 
-        c.content, u.name, u.surname, u.profile_picture
+        c.content, u.name, u.surname, u.profile_picture, d.department_name
        FROM comments c
        LEFT JOIN users u ON c.user_id = u.user_id
+       LEFT JOIN departments d ON u.department_id = d.department_id
        WHERE c.wish_id = $1`,
       [wish_id]
     );
@@ -42,7 +63,7 @@ class Comments {
       return null;
     }
 
-    return result.rows;
+    return result.rows.map((row) => this.fromDb(row));
   }
 }
 module.exports = Comments;
