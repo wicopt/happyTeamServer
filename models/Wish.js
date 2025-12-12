@@ -58,8 +58,8 @@ class Wish {
   static async create(wishData) {
     const { user_id, name, description, link } = wishData;
     const result = await pool.query(
-      `INSERT INTO wishes (user_id, name, description, link) 
-     VALUES ($1, $2, $3, $4)
+      `INSERT INTO wishes (user_id, name, description, link, price) 
+     VALUES ($1, $2, $3, $4, $5)
      RETURNING *`,
       [user_id, name, description, link,0]
     );
