@@ -61,7 +61,7 @@ class Wish {
       `INSERT INTO wishes (user_id, name, description, link, price) 
      VALUES ($1, $2, $3, $4, $5)
      RETURNING *`,
-      [user_id, name, description, link,0]
+      [user_id, name, description, link, 0]
     );
 
     return result.rows[0];

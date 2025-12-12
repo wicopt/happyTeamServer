@@ -14,10 +14,11 @@ class Comments {
   }
   static async findById(comment_id) {
     const result = await pool.query(
-      `SELECT с.user_id, c.comment_id, c.wish_id, 
-        c.content, c.created_date, c.created_time, u.name, u.surname, u.profile_picture
+      `SELECT c.user_id, c.comment_id, c.wish_id, 
+        c.content, u.name, u.surname, u.profile_picture, d.department_name
        FROM comments c
        LEFT JOIN users u ON c.user_id = u.user_id
+       LEFT JOIN departments d ON u.department_id = d.department_id
        WHERE c.comment_id = $1`,
       [comment_id]
     );
@@ -27,19 +28,22 @@ class Comments {
 
     return result.rows[0];
   }
-  static async create(commentData) {
+    static async create(commentData) {
     const { wish_id, user_id, content } = commentData;
 
     const query = `
         INSERT INTO comments (user_id, wish_id, content)
         VALUES ($1, $2, $3)
-        RETURNING *;
+        RETURNING comment_id, user_id, wish_id, content;
     `;
 
     const values = [user_id, wish_id, content];
-
     const result = await pool.query(query, values);
-    return result.rows[0];
+    
+    // Получаем полные данные созданного комментария
+    const createdComment = await this.findById(result.rows[0].comment_id);
+    
+    return this.fromDb(createdComment);
   }
   static async delete(commentId) {
     const result = await pool.query(

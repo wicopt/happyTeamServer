@@ -29,9 +29,7 @@ router.delete("/:commentId", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
- console.log("📨 POST /wishes - Creating new wish");
   console.log("Body:", req.body);
-  
   try {
     const newComm = await Comments.create(req.body);
     console.log("Comm created:", newComm);
