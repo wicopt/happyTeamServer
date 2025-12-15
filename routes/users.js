@@ -46,7 +46,8 @@ router.get("/:userId", async (req, res) => {
 
 router.get("/", async (req, res) => {
   try {
-    const users = await UserService.getAllUsers();
+    const currentUserId = req.user.user_id;
+    const users = await UserService.getAllUsers(currentUserId);
     res.json({users});
   } catch (error) {
     console.error("Error fetching all users:", error);

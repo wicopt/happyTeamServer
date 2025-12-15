@@ -40,8 +40,8 @@ class UserService {
   }
 
   // Получить всех пользователей
-  static async getAllUsers() {
-    return await User.findAll();
+  static async getAllUsers(excludeUserId) {
+    return await User.findAll(excludeUserId);
   }
 }
 
