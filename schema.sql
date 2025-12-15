@@ -38,8 +38,19 @@ CREATE TABLE "comments" (
 	datentime timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	CONSTRAINT comments_pkey PRIMARY KEY (comment_id)
 );
-
-
-
 ALTER TABLE "comments" ADD CONSTRAINT fk_comment_user FOREIGN KEY (user_id) REFERENCES public.users(user_id) ON DELETE CASCADE;
 ALTER TABLE "comments" ADD CONSTRAINT fk_comment_wish FOREIGN KEY (wish_id) REFERENCES public.wishes(wish_id) ON DELETE CASCADE;
+
+CREATE TABLE "initiative"(
+    "initiative_id" bigserial NOT NULL,
+    "initiator_id" BIGINT NOT NULL,
+    "user_id" BIGINT NOT NULL,
+    "chat_link" TEXT NOT NULL,
+    "funds_link" TEXT NOT NULL
+);
+ALTER TABLE
+    "initiative" ADD PRIMARY KEY("initiative_id");
+ALTER TABLE
+    "initiative" ADD CONSTRAINT "initiative_initiator_id_foreign" FOREIGN KEY("initiator_id") REFERENCES "users"("user_id");
+ALTER TABLE
+    "initiative" ADD CONSTRAINT "initiative_user_id_foreign" FOREIGN KEY("user_id") REFERENCES "users"("user_id");

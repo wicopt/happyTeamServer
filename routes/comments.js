@@ -8,7 +8,7 @@ router.get("/:wishId", async (req, res) => {
   try {
     const comments = await Comments.findAll(wishId);
 
-    console.log(comments); // ← вот это покажет, что ты возвращаешь
+    console.log(comments);
 
     res.json(comments);
   } catch (error) {
@@ -21,7 +21,6 @@ router.delete("/:commentId", async (req, res) => {
   const commentId = req.params.commentId;
   try {
     const comm = await Comments.delete(commentId);
-    res.json({"deleted comm:": commentId })
   } catch (error) {
     console.error("Error deleting wish:", error);
     res.status(500).json({ error: "Server error" });
