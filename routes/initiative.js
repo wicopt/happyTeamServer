@@ -32,6 +32,7 @@ router.delete("/:userId", async (req, res) => {
   const userId = req.params.userId;
   try {
     const initiv = await Initiative.delete(userId);
+    res.status(204);
   } catch (error) {
     console.error("Error deleting wish:", error);
     res.status(500).json({ error: "Server error" });

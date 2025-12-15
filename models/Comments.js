@@ -10,12 +10,13 @@ class Comments {
       surname: raw.surname,
       department_name: raw.department_name,
       profile_picture: raw.profile_picture,
+      dateNtime: raw.dateNtime
     };
   }
   static async findById(comment_id) {
     const result = await pool.query(
       `SELECT c.user_id, c.comment_id, c.wish_id, 
-        c.content, u.name, u.surname, u.profile_picture, d.department_name
+        c.content, c.dateNtime, u.name, u.surname, u.profile_picture, d.department_name
        FROM comments c
        LEFT JOIN users u ON c.user_id = u.user_id
        LEFT JOIN departments d ON u.department_id = d.department_id
@@ -64,7 +65,7 @@ class Comments {
       [wish_id]
     );
     if (result.rows.length === 0) {
-      return null;
+      return [];
     }
 
     return result.rows.map((row) => this.fromDb(row));

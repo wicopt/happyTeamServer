@@ -2,7 +2,7 @@ const { pool } = require("../config/dbConfig");
 class Initiative {
   static async findById(user_id) {
     const result = await pool.query(
-      `SELECT initiative_id, initiator_id, user_id, chat_link, funds_link
+      `SELECT  initiator_id, chat_link, funds_link
        FROM initiative
        WHERE user_id = $1`,
       [user_id]
