@@ -90,14 +90,18 @@ class User {
   }
 
   // Получить всех пользователей
-  static async findAll() {
-    const result = await pool.query(`
-      SELECT u.user_id, u.username, u.name, u.surname, u.patronymic,
-             u.birthday, u.profile_picture, d.department_name
-      FROM users u
-      LEFT JOIN departments d ON u.department_id = d.department_id
-      ORDER BY EXTRACT(MONTH FROM u.birthday), EXTRACT(DAY FROM u.birthday)
-    `);
+  static async findAll(excludeUserId) {
+  const result = await pool.query(
+    `
+    SELECT u.user_id, u.username, u.name, u.surname, u.patronymic,
+           u.birthday, u.profile_picture, d.department_name
+    FROM users u
+    LEFT JOIN departments d ON u.department_id = d.department_id
+    WHERE u.user_id <> $1
+    ORDER BY EXTRACT(MONTH FROM u.birthday), EXTRACT(DAY FROM u.birthday)
+    `,
+    [excludeUserId]
+  );
     return result.rows.map((row) => this.fromDb(row));
   }
 }

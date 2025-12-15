@@ -13,19 +13,6 @@ router.get("/:userId", async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 });
-// router.put("/:wishId", async (req, res) => {
-//   console.log("update wish");
-//   const wishId = req.params.wishId;
-//   const updateData = req.params.updateData;
-//   console.log(wishId);
-//   try {
-//     const updatedWish = await Wish.update(wishId, updateData);
-//     res.json(updatedWish);
-//   } catch (error) {
-//     console.error("Error updating wish:", error);
-//     res.status(500).json({ error: "Server error" });
-//   }
-// });
 router.put("/:wishId", async (req, res) => {
   console.log("📨 PUT /wishes/:wishId");
   console.log("wishId:", req.params.wishId);
@@ -62,7 +49,7 @@ router.post("/", async (req, res) => {
   try {
     const newWish = await Wish.create(req.body);
     console.log("✅ Wish created:", newWish);
-    res.status(201).json({newWish});
+    res.status(201).json( newWish );
   } catch (error) {
     console.error("❌ Error creating wish:", error);
     res.status(500).json({ error: "Server error" });
