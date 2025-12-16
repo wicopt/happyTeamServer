@@ -37,7 +37,7 @@ class User {
   // Получить пользователя по username
   static async findByUsername(username) {
     const result = await pool.query(
-      `SELECT u.user_id, u.username, u.name, u.surname, u.patronymic, 
+      `SELECT u.user_id, u.username, u.name, u.password_hash, u.surname, u.patronymic, 
           u.birthday, u.department_id, u.profile_picture, d.department_name, 
           u.initiator_id ,  u.chat_link, u.funds_link
      FROM users u 
