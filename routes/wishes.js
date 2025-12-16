@@ -34,9 +34,10 @@ router.put("/:wishId", async (req, res) => {
 });
 router.delete("/:wishId", async (req, res) => {
   console.log("delete wish");
-  const wishId = req.params.wishId;там 
+  const wishId = req.params.wishId; 
   try {
     const wishes = await Wish.delete(wishId);
+    res.json("Wish deleted")
   } catch (error) {
     console.error("Error deleting wish:", error);
     res.status(500).json({ error: "Server error" });
