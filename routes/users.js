@@ -45,7 +45,7 @@ router.get("/:userId", async (req, res) => {
     const user = await UserService.getProfile(userId);
 
     console.log("Data sent to frontend:", user); // ← вот это покажет, что ты возвращаешь
-
+    
     res.json({ user });
   } catch (error) {
     console.error("Error fetching user:", error);

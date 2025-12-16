@@ -12,7 +12,7 @@ class Wish {
   }
   static async findAll(userId) {
     const result = await pool.query(
-      `SELECT wish_id, name, description, link, price
+      `SELECT wish_id, name, description, link
       FROM wishes WHERE user_id = $1
       ORDER BY wish_id`,
       [userId]

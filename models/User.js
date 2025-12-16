@@ -11,13 +11,17 @@ class User {
       birthday: raw.birthday?.toISOString().split("T")[0],
       department_name: raw.department_name,
       profile_picture: raw.profile_picture,
+      initiaror_id: raw.initiaror_id,
+      chat_link: raw.chat_link,
+      funds_link: raw.funds_link,
     };
   }
   // Получить пользователя по ID
   static async findById(userId) {
     const result = await pool.query(
-      `SELECT u.user_id, u.username, u.name, u.surname, u.patronymic,
-              u.birthday, u.department_id, u.profile_picture, d.department_name
+      `SELECT u.user_id, u.username, u.name, u.surname, u.patronymic, 
+          u.birthday, u.department_id, u.profile_picture, d.department_name, 
+          u.initiator_id ,  u.chat_link, u.funds_link
        FROM users u 
        LEFT JOIN departments d ON u.department_id = d.department_id 
        WHERE u.user_id = $1`,
@@ -33,9 +37,9 @@ class User {
   // Получить пользователя по username
   static async findByUsername(username) {
     const result = await pool.query(
-      `SELECT u.user_id, u.username, u.name, u.surname, u.patronymic,
-            u.birthday, u.department_id, u.profile_picture, u.password_hash,
-            d.department_name
+      `SELECTu.user_id, u.username, u.name, u.surname, u.patronymic, 
+          u.birthday, u.department_id, u.profile_picture, d.department_name, 
+          u.initiator_id ,  u.chat_link, u.funds_link
      FROM users u 
      LEFT JOIN departments d ON u.department_id = d.department_id 
      WHERE u.username = $1`,
@@ -91,8 +95,8 @@ class User {
 
   // Получить всех пользователей
   static async findAllFront(excludeUserId) {
-  const result = await pool.query(
-    `
+    const result = await pool.query(
+      `
     SELECT u.user_id, u.username, u.name, u.surname, u.patronymic,
            u.birthday, u.profile_picture, d.department_name
     FROM users u
@@ -100,23 +104,23 @@ class User {
     WHERE u.user_id <> $1
     ORDER BY EXTRACT(MONTH FROM u.birthday), EXTRACT(DAY FROM u.birthday)
     `,
-    [excludeUserId]
-  );
+      [excludeUserId]
+    );
     return result.rows.map((row) => this.fromDb(row));
-  }  
+  }
   static async findAll() {
-  const result = await pool.query(
-    `
+    const result = await pool.query(
+      `
     SELECT u.user_id, u.username, u.name, u.surname, u.patronymic,
            u.birthday, u.profile_picture, d.department_name
     FROM users u
     LEFT JOIN departments d ON u.department_id = d.department_id
     ORDER BY EXTRACT(MONTH FROM u.birthday), EXTRACT(DAY FROM u.birthday)
-    `,
-  );
+    `
+    );
     return result.rows.map((row) => this.fromDb(row));
   }
-  findAllFront
+  findAllFront;
 }
 
 module.exports = User;

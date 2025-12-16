@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Initiative = require("../models/Initiative");
 router.post("/", async (req, res) => {
+    console.log("Initiative created:");
   console.log("Body:", req.body);
   try {
     const newInit = await Initiative.create(req.body);
@@ -27,16 +28,6 @@ router.get("/:userId", async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 });
-router.delete("/:userId", async (req, res) => {
-  console.log("delete wish");
-  const userId = req.params.userId;
-  try {
-    const initiv = await Initiative.delete(userId);
-    res.status(204);
-  } catch (error) {
-    console.error("Error deleting wish:", error);
-    res.status(500).json({ error: "Server error" });
-  }
-});
+
 
 module.exports = router;
