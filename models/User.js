@@ -90,7 +90,7 @@ class User {
   }
 
   // Получить всех пользователей
-  static async findAll(excludeUserId) {
+  static async findAllFront(excludeUserId) {
   const result = await pool.query(
     `
     SELECT u.user_id, u.username, u.name, u.surname, u.patronymic,
@@ -103,7 +103,20 @@ class User {
     [excludeUserId]
   );
     return result.rows.map((row) => this.fromDb(row));
+  }  
+  static async findAll() {
+  const result = await pool.query(
+    `
+    SELECT u.user_id, u.username, u.name, u.surname, u.patronymic,
+           u.birthday, u.profile_picture, d.department_name
+    FROM users u
+    LEFT JOIN departments d ON u.department_id = d.department_id
+    ORDER BY EXTRACT(MONTH FROM u.birthday), EXTRACT(DAY FROM u.birthday)
+    `,
+  );
+    return result.rows.map((row) => this.fromDb(row));
   }
+  findAllFront
 }
 
 module.exports = User;

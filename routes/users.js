@@ -3,7 +3,16 @@ const router = express.Router();
 const UserService = require("../services/UserService");
 
 // Получить текущего пользователя
-
+router.get("/frontend", async (req, res) => {
+  try {
+    const currentUserId = req.user.user_id;
+    const users = await UserService.getAllUsersFront(currentUserId);
+    res.json({users});
+  } catch (error) {
+    console.error("Error fetching all users:", error);
+    res.status(500).json({ error: "Server error" });
+  }
+});
 router.get("/user", async (req, res) => {
   if (!req.user) {
     return res.status(401).json({ error: "Not authenticated" });
@@ -46,8 +55,7 @@ router.get("/:userId", async (req, res) => {
 
 router.get("/", async (req, res) => {
   try {
-    const currentUserId = req.user.user_id;
-    const users = await UserService.getAllUsers(currentUserId);
+    const users = await UserService.getAllUsers();
     res.json({users});
   } catch (error) {
     console.error("Error fetching all users:", error);

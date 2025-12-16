@@ -34,7 +34,7 @@ router.put("/:wishId", async (req, res) => {
 });
 router.delete("/:wishId", async (req, res) => {
   console.log("delete wish");
-  const wishId = req.params.wishId;
+  const wishId = req.params.wishId;там 
   try {
     const wishes = await Wish.delete(wishId);
   } catch (error) {

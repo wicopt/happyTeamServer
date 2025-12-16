@@ -17,6 +17,27 @@ CREATE TABLE users (
         REFERENCES departments(department_id)
         ON DELETE CASCADE
 );
+// второй варик
+CREATE TABLE users (
+	user_id bigserial NOT NULL,
+	username varchar(255) NOT NULL,
+	password_hash varchar(255) NOT NULL,
+	birthday date NOT NULL,
+	"name" varchar(255) NOT NULL,
+	surname varchar(255) NOT NULL,
+	patronymic varchar(255) NULL,
+	department_id int8 NOT NULL,
+	profile_picture varchar NULL,
+	initiaror_id int NULL,
+	chat_link text NULL,
+	funds_link text NULL,
+	CONSTRAINT users_pkey PRIMARY KEY (user_id)
+);
+
+
+-- public.users внешние включи
+
+ALTER TABLE public.users ADD CONSTRAINT users_department_fk FOREIGN KEY (department_id) REFERENCES departments(department_id) ON DELETE CASCADE;
 CREATE TABLE wishes (
     wish_id     BIGSERIAL PRIMARY KEY,
     user_id     BIGINT NOT NULL,

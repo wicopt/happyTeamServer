@@ -40,9 +40,13 @@ class UserService {
   }
 
   // Получить всех пользователей
-  static async getAllUsers(excludeUserId) {
-    return await User.findAll(excludeUserId);
+  static async getAllUsersFront(excludeUserId) {
+    return await User.findAllFront(excludeUserId);
   }
+  static async getAllUsers() {
+    return await User.findAll();
+  }
+  
 }
 
 module.exports = UserService;
