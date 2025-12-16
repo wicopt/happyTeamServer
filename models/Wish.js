@@ -2,12 +2,9 @@ const { pool } = require("../config/dbConfig");
 class Wish {
   static async FindById(wishId) {
     const result = await pool.query(
-      `SELECT u.user_id, u.username, u.name, u.surname, u.patronymic,
-              u.birthday, u.department_id, d.department_name
-       FROM users u 
-       LEFT JOIN departments d ON u.department_id = d.department_id 
-       WHERE u.user_id = $1`,
-      [userId]
+      `SELECT wish_id, name, description, link
+      FROM wishes WHERE wish_id = $1`,
+      [wishId]
     );
   }
   static async findAll(userId) {

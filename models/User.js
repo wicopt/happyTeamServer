@@ -11,7 +11,7 @@ class User {
       birthday: raw.birthday?.toISOString().split("T")[0],
       department_name: raw.department_name,
       profile_picture: raw.profile_picture,
-      initiaror_id: raw.initiaror_id,
+      initiator_id: raw.initiator_id,
       chat_link: raw.chat_link,
       funds_link: raw.funds_link,
     };
@@ -21,7 +21,7 @@ class User {
     const result = await pool.query(
       `SELECT u.user_id, u.username, u.name, u.surname, u.patronymic, 
           u.birthday, u.department_id, u.profile_picture, d.department_name, 
-          u.initiator_id ,  u.chat_link, u.funds_link
+          u.initiator_id,  u.chat_link, u.funds_link
        FROM users u 
        LEFT JOIN departments d ON u.department_id = d.department_id 
        WHERE u.user_id = $1`,
@@ -31,7 +31,7 @@ class User {
       return null;
     }
 
-    return result.rows[0];
+    return this.fromDb(result.rows[0]);
   }
 
   // Получить пользователя по username

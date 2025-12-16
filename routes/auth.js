@@ -175,10 +175,22 @@ router.post("/login", (req, res, next) => {
 
       console.log("✅ Login successful, user ID:", user.user_id);
       console.log(user);
-      formatuser = User.fromDb(user)
+      const formatuser = User.fromDb(user)
       return res.json( formatuser);
     });
   })(req, res, next);
+});
+router.post("/logout", (req, res, next) => {
+  req.logout(function (err) {
+    if (err) {
+      return next(err);
+    }
+
+    req.session.destroy(() => {
+      res.clearCookie("connect.sid"); // имя куки по умолчанию
+      return res.json({ message: "Logged out successfully" });
+    });
+  });
 });
 
 module.exports = router;
