@@ -6,6 +6,7 @@ class Wish {
       FROM wishes WHERE wish_id = $1`,
       [wishId]
     );
+    return result.rows[0];
   }
   static async findAll(userId) {
     const result = await pool.query(
